@@ -3,46 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мир Крыс</title>
+    <title>Крысиный Дворик</title>
     <style>
-        body { 
-            font-family: sans-serif; 
-            background: #1a1a1a; 
-            color: white; 
-            text-align: center; 
-            padding: 20px; 
+        body {
+            background: #2d5a27; /* Зеленая трава */
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex; flex-direction: column; align-items: center;
+            margin: 0; min-height: 100vh;
+            background: linear-gradient(#4da6ff, #2d5a27 50%); /* Небо и земля */
         }
-        .hole-link {
-            display: inline-block;
-            margin-top: 20px;
-            text-decoration: none;
-            font-size: 1.2rem;
-            color: #ffcc00;
-            border: 2px dashed #555;
-            padding: 10px 20px;
-            border-radius: 50px;
-            transition: 0.3s;
+
+        .courtyard {
+            text-align: center; margin-top: 50px; position: relative;
+            width: 320px; height: 400px;
         }
-        .hole-link:hover {
-            background: #333;
-            border-color: #ffcc00;
+
+        /* Объекты дворика */
+        .swing { font-size: 50px; cursor: pointer; transition: 0.5s; display: inline-block; }
+        .swing:active { transform: rotate(20deg); }
+        
+        .apple-tree { font-size: 80px; cursor: pointer; }
+        
+        .hole { 
+            font-size: 60px; text-decoration: none; display: block; 
+            margin-top: 20px; filter: drop-shadow(0 0 10px black);
         }
-        img { 
-            max-width: 90%; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            margin-top: 20px;
+
+        /* Кнопки перемещения */
+        .gate-btn {
+            background: #5d4037; color: #fff; border: 2px solid #3e2723;
+            padding: 15px 25px; border-radius: 10px; text-decoration: none;
+            font-weight: bold; margin-top: 30px; display: inline-block;
         }
-        h1 { color: #ffcc00; }
-        .card { background: #2a2a2a; padding: 20px; border-radius: 15px; display: inline-block; }
+
+        .bubble {
+            background: white; color: black; padding: 10px;
+            border-radius: 15px; position: absolute; top: -20px; display: none;
+        }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>Моя супер-крыса</h1>
-        <p>Посмотри, какой солидный грызун!</p>
-        <img src="rat.png" alt="Крыса">
-        <a href="/krisinaya_nora/" class="hole-link">🕳️ Юркнуть в уютную нору...</a>
+
+    <h1>Твой Дворик 🏡</h1>
+
+    <div class="courtyard">
+        <div id="msg" class="bubble">Вкусно! 🍎</div>
+        
+        <div class="apple-tree" onclick="eatApple()">🌳🍎</div>
+        
+        <div class="swing" id="swing" onclick="rideSwing()">⚙️🧺</div>
+        <p>Качели (нажми!)</p>
+
+        <a href="/krisinaya_nora/" class="hole">🕳️</a>
+        <p><b>Юркнуть в Нору</b></p>
     </div>
+
+    <a href="#" class="gate-btn" onclick="goToCity()">🚧 Выйти за ворота (В город)</a>
+
+    <script>
+        function eatApple() {
+            const msg = document.getElementById('msg');
+            msg.style.display = 'block';
+            msg.innerText = "Хрум! Сладкое яблоко!";
+            setTimeout(() => msg.style.display = 'none', 2000);
+        }
+
+        function rideSwing() {
+            const s = document.getElementById('swing');
+            s.style.transform = "translateX(20px) rotate(10deg)";
+            setTimeout(() => s.style.transform = "translateX(-20px) rotate(-10deg)", 300);
+            setTimeout(() => s.style.transform = "translateX(0) rotate(0)", 600);
+        }
+
+        function goToCity() {
+            alert("Ты выходишь за ворота... Там шумят другие крысы, светят витрины магазинов и стоят многоэтажные скворечники!");
+        }
+    </script>
 </body>
 </html>
