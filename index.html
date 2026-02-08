@@ -4,46 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Крысиный Дворик</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
     <style>
         body {
-            background: #2d5a27; /* Зеленая трава */
+            background: #2d5a27;
             color: white;
-            font-family: 'Segoe UI', sans-serif;
+            /* Добавляем Noto Color Emoji в приоритет */
+            font-family: 'Noto Color Emoji', 'Segoe UI', sans-serif;
             display: flex; flex-direction: column; align-items: center;
             margin: 0; min-height: 100vh;
-            background: linear-gradient(#4da6ff, #2d5a27 50%); /* Небо и земля */
+            background: linear-gradient(#4da6ff, #2d5a27 50%);
+        }
+
+        /* Панель ресурсов (как в Норе) */
+        .stat-overlay {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #ffcc00;
         }
 
         .courtyard {
-            text-align: center; margin-top: 50px; position: relative;
-            width: 320px; height: 400px;
+            text-align: center; margin-top: 30px; position: relative;
+            width: 320px; height: 380px;
         }
 
-        /* Объекты дворика */
         .swing { font-size: 50px; cursor: pointer; transition: 0.5s; display: inline-block; }
-        .swing:active { transform: rotate(20deg); }
         
-        .apple-tree { font-size: 80px; cursor: pointer; }
+        .apple-tree { font-size: 80px; cursor: pointer; transition: transform 0.2s; }
+        .apple-tree:hover { transform: scale(1.05); }
         
         .hole { 
             font-size: 60px; text-decoration: none; display: block; 
-            margin-top: 20px; filter: drop-shadow(0 0 10px black);
+            margin-top: 20px; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
         }
 
-        /* Кнопки перемещения */
         .gate-btn {
             background: #5d4037; color: #fff; border: 2px solid #3e2723;
             padding: 15px 25px; border-radius: 10px; text-decoration: none;
-            font-weight: bold; margin-top: 30px; display: inline-block;
+            font-weight: bold; margin-top: 20px; display: inline-block;
         }
 
         .bubble {
             background: white; color: black; padding: 10px;
-            border-radius: 15px; position: absolute; top: -20px; display: none;
+            border-radius: 15px; position: absolute; top: -20px; 
+            left: 50%; transform: translateX(-50%); display: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        /* Чтобы иконки не разъезжались */
+        .apple-tree, .swing, .hole, .gate-btn {
+            font-family: 'Noto Color Emoji', sans-serif;
         }
     </style>
 </head>
 <body>
+
+    <div class="stat-overlay">
+        Сыр: <span id="cheese-count">0</span> 🧀 | Реп: <span id="rep-count">0</span> ⭐
+    </div>
 
     <h1>Твой Дворик 🏡</h1>
 
@@ -57,19 +79,37 @@
 
         <a href="/krisinaya_nora/" class="hole">🕳️</a>
         <p><b>Юркнуть в Нору</b></p>
+        
         <a href="/ratmetro/" style="text-decoration: none; display: block; margin-top: 15px;">
-    <div style="font-size: 40px;">🚇</div>
-    <p style="color: white; font-size: 0.8rem; margin: 0;">Спуститься в метро</p>
+            <div style="font-size: 40px;">🚇</div>
+            <p style="color: white; font-size: 0.8rem; margin: 0;">Спуститься в метро</p>
         </a>
     </div>
 
-    <a href="/rattown/" class="gate-btn" onclick="goToCity()">🚧 Выйти за ворота (В город)</a>
+    <a href="/rattown/" class="gate-btn">🚧 Выйти за ворота (В город)</a>
 
     <script>
+        let cheese = 0;
+        let reputation = 0;
+
+        // Загрузка данных при входе во дворик
+        function loadStats() {
+            if (localStorage.getItem('ratCheese')) {
+                cheese = parseInt(localStorage.getItem('ratCheese'));
+            }
+            if (localStorage.getItem('ratRep')) {
+                reputation = parseInt(localStorage.getItem('ratRep'));
+            }
+            document.getElementById('cheese-count').innerText = cheese;
+            document.getElementById('rep-count').innerText = reputation;
+        }
+
         function eatApple() {
             const msg = document.getElementById('msg');
             msg.style.display = 'block';
             msg.innerText = "Хрум! Сладкое яблоко!";
+            // Можно добавить +1 сыр за яблоко, если хочешь:
+            // cheese++; saveStats(); updateDisplay();
             setTimeout(() => msg.style.display = 'none', 2000);
         }
 
@@ -80,6 +120,7 @@
             setTimeout(() => s.style.transform = "translateX(0) rotate(0)", 600);
         }
 
+        window.onload = loadStats;
     </script>
 </body>
 </html>
